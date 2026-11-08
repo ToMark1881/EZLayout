@@ -1,9 +1,7 @@
 //
 //  UIEdgeInsets+Extensions.swift
-//  Zakaz
 //
 //  Created by Vladyslav Vdovychenko on 25.03.2026.
-//  Copyright © 2026 Zakaz Investments Limited. All rights reserved.
 //
 
 import UIKit

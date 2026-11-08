@@ -1,9 +1,7 @@
 //
 //  Constraints+KeyboardLayout.swift
-//  Zakaz
 //
 //  Created by Vladyslav Vdovychenko on 16.09.2026.
-//  Copyright © 2026 Zakaz Investments Limited. All rights reserved.
 //
 
 import UIKit
