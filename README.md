@@ -38,7 +38,7 @@ EZLayout is distributed with Swift Package Manager.
 ### Xcode project
 
 1. **File → Add Package Dependencies…**
-2. Paste the repository URL: `https://github.com/<owner>/EZLayout.git`
+2. Paste the repository URL: `https://github.com/ToMark1881/EZLayout.git`
 3. Choose a dependency rule (for example *Up to Next Major Version* from `1.0.0`).
 4. Add the **EZLayout** library product to every app/framework target that builds layout code.
 
@@ -46,7 +46,7 @@ EZLayout is distributed with Swift Package Manager.
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/<owner>/EZLayout.git", from: "1.0.0")
+    .package(url: "https://github.com/ToMark1881/EZLayout.git", from: "1.0.0")
 ],
 targets: [
     .target(
