@@ -4,7 +4,11 @@
 //  Created by Vladyslav Vdovychenko on 25.03.2026.
 //
 
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 public protocol Layoutable {
     var topAnchor: NSLayoutYAxisAnchor { get }
@@ -21,12 +25,12 @@ public protocol Layoutable {
     var heightAnchor: NSLayoutDimension { get }
 }
 
-extension UIView: Layoutable { }
-extension UILayoutGuide: Layoutable { }
+extension EZView: Layoutable { }
+extension EZLayoutGuide: Layoutable { }
 
 public struct Constrainable {
     /// Original view, makes no sense to use during building layout
-    public let view: UIView
+    public let view: EZView
     
     @discardableResult
     public func prepareForLayout() -> Self {
@@ -35,7 +39,7 @@ public struct Constrainable {
     }
 }
 
-public extension UIView {
+public extension EZView {
     /// Easy (ez) Layout (l)
     var ezl: Constrainable {
         .init(view: self)

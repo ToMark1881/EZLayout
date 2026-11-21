@@ -1,6 +1,6 @@
 # EZLayout
 
-**EZLayout** (Easy Layout) is a tiny, dependency-free wrapper around UIKit Auto Layout anchors.
+**EZLayout** (Easy Layout) is a tiny, dependency-free wrapper around Auto Layout anchors for UIKit (iOS) and AppKit (macOS).
 It turns verbose anchor code into one readable line per constraint, while still handing you plain
 `NSLayoutConstraint` objects.
 
@@ -22,12 +22,14 @@ titleLabel.ezl.horizontalToSuperview(insets: .horizontal(16))
 - Every call sets `translatesAutoresizingMaskIntoConstraints = false` on the receiver for you.
 - Every call activates the constraint by default and returns it, so you can keep a reference and update it later.
 - Works with `UIView` and `UILayoutGuide` targets (safe area, keyboard layout guide, custom guides).
+- The same calls work on macOS with `NSView` and `NSLayoutGuide` (see [macOS](#macos-appkit)).
 
 ## Requirements
 
 | | Minimum |
 |---|---|
 | iOS | 15.0 |
+| macOS | 11.0 (EZLayout 1.1.0+) |
 | Swift tools | 5.9 |
 | Xcode | 15.0 |
 
@@ -39,14 +41,14 @@ EZLayout is distributed with Swift Package Manager.
 
 1. **File → Add Package Dependencies…**
 2. Paste the repository URL: `https://github.com/ToMark1881/EZLayout.git`
-3. Choose a dependency rule (for example *Up to Next Major Version* from `1.0.0`).
+3. Choose a dependency rule (for example *Up to Next Major Version* from `1.1.0`).
 4. Add the **EZLayout** library product to every app/framework target that builds layout code.
 
 ### Package.swift
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/ToMark1881/EZLayout.git", from: "1.0.0")
+    .package(url: "https://github.com/ToMark1881/EZLayout.git", from: "1.1.0")
 ],
 targets: [
     .target(
@@ -72,7 +74,7 @@ Keep the package folder next to your project, e.g. `Packages/EZLayout`, then eit
 import EZLayout
 ```
 
-Import it in every file that uses `.ezl`, `LayoutEdge`, or the `UIEdgeInsets` helpers.
+Import it in every file that uses `.ezl`, `LayoutEdge`, or the `UIEdgeInsets` / `NSEdgeInsets` helpers.
 
 ## Quick start
 
@@ -134,7 +136,7 @@ Every constraint method shares the same trailing parameters:
 |---|---|---|
 | `offset` / `insets` | `0` / `.zero` | Constant of the constraint (see the sign rule below). |
 | `relation` | `.equal` | `.lessThanOrEqual` / `.greaterThanOrEqual` for flexible layouts. |
-| `priority` | `.required` | Any `UILayoutPriority`. |
+| `priority` | `.required` | Any `UILayoutPriority` (`NSLayoutConstraint.Priority` on macOS). |
 | `isActive` | `true` | Pass `false` to create a constraint you will activate later. |
 | `usingSafeArea` | `false` | `*ToSuperview` methods only: pin to the superview's `safeAreaLayoutGuide`. |
 
@@ -195,7 +197,7 @@ All of them accept `usingSafeArea:`.
 | `size(_ size: CGSize)` | width + height |
 | `aspectRatio(_:)` | width = height × ratio |
 
-### Keyboard (iOS 15+)
+### Keyboard (iOS only)
 
 ```swift
 // Content follows the keyboard, but never goes below the safe area
@@ -233,7 +235,7 @@ let constraints = view.ezl.edgesToSuperview(isActive: false)
 constraints.activate()                             // also: .deactivate()
 ```
 
-### `UIEdgeInsets` helpers
+### `UIEdgeInsets` / `NSEdgeInsets` helpers
 
 ```swift
 .uniform(16)                     // all edges
@@ -241,6 +243,58 @@ constraints.activate()                             // also: .deactivate()
 .top(8) / .left(8) / .bottom(8) / .right(8)
 .horizontal(16) + .vertical(8)   // insets can be added
 ```
+
+## macOS (AppKit)
+
+Since 1.1.0 the same API works on `NSView`:
+
+```swift
+import AppKit
+import EZLayout
+
+final class InspectorView: NSView {
+
+    private let titleLabel = NSTextField(labelWithString: "Stack")
+    private let slider = NSSlider()
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        addSubview(titleLabel)
+        addSubview(slider)
+
+        titleLabel.ezl.topToSuperview(offset: 12, usingSafeArea: true)
+        titleLabel.ezl.horizontalToSuperview(insets: .horizontal(16))
+
+        slider.ezl.topToBottom(of: titleLabel, offset: 8)
+        slider.ezl.horizontalToSuperview(insets: .horizontal(16))
+        slider.ezl.bottomToSuperview(offset: -12)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+```
+
+The library is written against five aliases, declared in `Platform.swift`. On iOS they are the UIKit types, so
+existing code needs no changes; use them yourself only in code shared between the two platforms.
+
+| Alias | iOS | macOS |
+|---|---|---|
+| `EZView` | `UIView` | `NSView` |
+| `EZLayoutGuide` | `UILayoutGuide` | `NSLayoutGuide` |
+| `EZEdgeInsets` | `UIEdgeInsets` | `NSEdgeInsets` |
+| `EZLayoutPriority` | `UILayoutPriority` | `NSLayoutConstraint.Priority` |
+| `EZAxis` | `NSLayoutConstraint.Axis` | `NSLayoutConstraint.Orientation` |
+
+What differs on macOS:
+
+- `top` is the visual top whether or not the view is flipped; only the numbers in `frame` differ (an unflipped
+  `NSView` counts y from the bottom).
+- `usingSafeArea` uses `NSView.safeAreaLayoutGuide`, which is why macOS 11 is the minimum.
+- There is no keyboard layout guide, so `keyboardGuide(of:)` and `bottomToKeyboard(of:)` are not available.
+- `NSEdgeInsets` gets a `.zero` to match `UIEdgeInsets.zero`.
+- Use `NSStackView` where you would use `UIStackView`.
 
 ## Updating constraints
 
@@ -278,7 +332,13 @@ See [Docs/BestPractices.md](Docs/BestPractices.md).
 
 ## Running the tests
 
-UIKit tests need an iOS simulator:
+On a Mac the suite runs against AppKit with no simulator:
+
+```bash
+swift test
+```
+
+The same tests run against UIKit on an iOS simulator:
 
 ```bash
 xcodebuild test -scheme EZLayout -destination 'platform=iOS Simulator,name=iPhone 16'

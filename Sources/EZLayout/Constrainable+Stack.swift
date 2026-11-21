@@ -4,7 +4,11 @@
 //  Created by Vladyslav Vdovychenko on 25.03.2026.
 //
 
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 public extension Constrainable {
     
@@ -23,8 +27,8 @@ public extension Constrainable {
     /// - Important: The receiver's `translatesAutoresizingMaskIntoConstraints` is set to `false`, and each
     ///              added view also has `translatesAutoresizingMaskIntoConstraints` set to `false`.
     @discardableResult
-    func stack(_ views: [UIView],
-               axis: NSLayoutConstraint.Axis = .vertical,
+    func stack(_ views: [EZView],
+               axis: EZAxis = .vertical,
                width: CGFloat? = nil,
                height: CGFloat? = nil,
                spacing: CGFloat = 0) -> [NSLayoutConstraint] {
@@ -32,7 +36,7 @@ public extension Constrainable {
         view.translatesAutoresizingMaskIntoConstraints = false
         
         var offset: CGFloat = 0
-        var previous: UIView?
+        var previous: EZView?
         var constraints: [NSLayoutConstraint] = []
         
         for view in views {

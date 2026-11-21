@@ -4,7 +4,11 @@
 //  Created by Vladyslav Vdovychenko on 25.03.2026.
 //
 
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 public extension Constrainable {
     
@@ -21,9 +25,9 @@ public extension Constrainable {
     /// - Returns: The created constraints.
     @discardableResult
     func edgesToSuperview(excluding excludedEdge: LayoutEdge = .none,
-                          insets: UIEdgeInsets = .zero,
+                          insets: EZEdgeInsets = .zero,
                           relation: NSLayoutConstraint.Relation = .equal,
-                          priority: UILayoutPriority = .required,
+                          priority: EZLayoutPriority = .required,
                           isActive: Bool = true,
                           usingSafeArea: Bool = false) -> [NSLayoutConstraint] {
         var constraints = [NSLayoutConstraint]()
@@ -88,7 +92,7 @@ public extension Constrainable {
     func leadingToSuperview( _ anchor: NSLayoutXAxisAnchor? = nil,
                              offset: CGFloat = 0,
                              relation: NSLayoutConstraint.Relation = .equal,
-                             priority: UILayoutPriority = .required,
+                             priority: EZLayoutPriority = .required,
                              isActive: Bool = true,
                              usingSafeArea: Bool = false) -> NSLayoutConstraint {
         let constrainable = safeConstrainable(for: view.superview, usingSafeArea: usingSafeArea)
@@ -108,7 +112,7 @@ public extension Constrainable {
     func trailingToSuperview( _ anchor: NSLayoutXAxisAnchor? = nil,
                               offset: CGFloat = 0,
                               relation: NSLayoutConstraint.Relation = .equal,
-                              priority: UILayoutPriority = .required,
+                              priority: EZLayoutPriority = .required,
                               isActive: Bool = true,
                               usingSafeArea: Bool = false) -> NSLayoutConstraint {
         let constrainable = safeConstrainable(for: view.superview, usingSafeArea: usingSafeArea)
@@ -125,9 +129,9 @@ public extension Constrainable {
     /// Accounts for layout direction and can target the safe area.
     /// - Returns: The created left/right (or leading/trailing) constraints.
     @discardableResult
-    func horizontalToSuperview(insets: UIEdgeInsets = .zero,
+    func horizontalToSuperview(insets: EZEdgeInsets = .zero,
                                relation: NSLayoutConstraint.Relation = .equal,
-                               priority: UILayoutPriority = .required,
+                               priority: EZLayoutPriority = .required,
                                isActive: Bool = true,
                                usingSafeArea: Bool = false) -> [NSLayoutConstraint] {
         
@@ -149,9 +153,9 @@ public extension Constrainable {
     /// Can target the safe area.
     /// - Returns: The created top and bottom constraints.
     @discardableResult
-    func verticalToSuperview(insets: UIEdgeInsets = .zero,
+    func verticalToSuperview(insets: EZEdgeInsets = .zero,
                              relation: NSLayoutConstraint.Relation = .equal,
-                             priority: UILayoutPriority = .required,
+                             priority: EZLayoutPriority = .required,
                              isActive: Bool = true,
                              usingSafeArea: Bool = false) -> [NSLayoutConstraint] {
         
@@ -197,7 +201,7 @@ public extension Constrainable {
     ///   - usingSafeArea: Whether to return the superview's safe area layout guide.
     /// - Returns: The superview or its safe area layout guide.
     /// - Note: Crashes if the view has no superview.
-    private func safeConstrainable(for superview: UIView?, usingSafeArea: Bool) -> Layoutable {
+    private func safeConstrainable(for superview: EZView?, usingSafeArea: Bool) -> Layoutable {
         guard let superview = superview else {
             fatalError("Unable to create this constraint to it's superview, because it has no superview.")
         }
@@ -221,7 +225,7 @@ public extension Constrainable {
     /// - Returns: The created center X and center Y constraints.
     @discardableResult
     func centerInSuperview(offset: CGPoint = .zero,
-                           priority: UILayoutPriority = .required,
+                           priority: EZLayoutPriority = .required,
                            isActive: Bool = true,
                            usingSafeArea: Bool = false) -> [NSLayoutConstraint] {
         let constrainable = safeConstrainable(for: view.superview, usingSafeArea: usingSafeArea)
@@ -233,9 +237,9 @@ public extension Constrainable {
     /// - Parameters mirror those of `edgesToSuperview`.
     /// - Returns: The created left and top constraints.
     @discardableResult
-    func originToSuperview(insets: UIEdgeInsets = .zero,
+    func originToSuperview(insets: EZEdgeInsets = .zero,
                            relation: NSLayoutConstraint.Relation = .equal,
-                           priority: UILayoutPriority = .required,
+                           priority: EZLayoutPriority = .required,
                            isActive: Bool = true,
                            usingSafeArea: Bool = false) -> [NSLayoutConstraint] {
         let constrainable = safeConstrainable(for: view.superview, usingSafeArea: usingSafeArea)
@@ -258,7 +262,7 @@ public extension Constrainable {
                            multiplier: CGFloat = 1,
                            offset: CGFloat = 0,
                            relation: NSLayoutConstraint.Relation = .equal,
-                           priority: UILayoutPriority = .required,
+                           priority: EZLayoutPriority = .required,
                            isActive: Bool = true,
                            usingSafeArea: Bool = false) -> NSLayoutConstraint {
         let constrainable = safeConstrainable(for: view.superview, usingSafeArea: usingSafeArea)
@@ -281,7 +285,7 @@ public extension Constrainable {
                             multiplier: CGFloat = 1,
                             offset: CGFloat = 0,
                             relation: NSLayoutConstraint.Relation = .equal,
-                            priority: UILayoutPriority = .required,
+                            priority: EZLayoutPriority = .required,
                             isActive: Bool = true,
                             usingSafeArea: Bool = false) -> NSLayoutConstraint {
         let constrainable = safeConstrainable(for: view.superview, usingSafeArea: usingSafeArea)
@@ -295,7 +299,7 @@ public extension Constrainable {
     func leftToSuperview( _ anchor: NSLayoutXAxisAnchor? = nil,
                           offset: CGFloat = 0,
                           relation: NSLayoutConstraint.Relation = .equal,
-                          priority: UILayoutPriority = .required,
+                          priority: EZLayoutPriority = .required,
                           isActive: Bool = true,
                           usingSafeArea: Bool = false) -> NSLayoutConstraint {
         let constrainable = safeConstrainable(for: view.superview, usingSafeArea: usingSafeArea)
@@ -309,7 +313,7 @@ public extension Constrainable {
     func rightToSuperview( _ anchor: NSLayoutXAxisAnchor? = nil,
                            offset: CGFloat = 0,
                            relation: NSLayoutConstraint.Relation = .equal,
-                           priority: UILayoutPriority = .required,
+                           priority: EZLayoutPriority = .required,
                            isActive: Bool = true,
                            usingSafeArea: Bool = false) -> NSLayoutConstraint {
         let constrainable = safeConstrainable(for: view.superview, usingSafeArea: usingSafeArea)
@@ -323,7 +327,7 @@ public extension Constrainable {
     func topToSuperview( _ anchor: NSLayoutYAxisAnchor? = nil,
                          offset: CGFloat = 0,
                          relation: NSLayoutConstraint.Relation = .equal,
-                         priority: UILayoutPriority = .required,
+                         priority: EZLayoutPriority = .required,
                          isActive: Bool = true,
                          usingSafeArea: Bool = false) -> NSLayoutConstraint {
         let constrainable = safeConstrainable(for: view.superview, usingSafeArea: usingSafeArea)
@@ -337,7 +341,7 @@ public extension Constrainable {
     func bottomToSuperview( _ anchor: NSLayoutYAxisAnchor? = nil,
                             offset: CGFloat = 0,
                             relation: NSLayoutConstraint.Relation = .equal,
-                            priority: UILayoutPriority = .required,
+                            priority: EZLayoutPriority = .required,
                             isActive: Bool = true,
                             usingSafeArea: Bool = false) -> NSLayoutConstraint {
         let constrainable = safeConstrainable(for: view.superview, usingSafeArea: usingSafeArea)
@@ -351,7 +355,7 @@ public extension Constrainable {
     func centerXToSuperview( _ anchor: NSLayoutXAxisAnchor? = nil,
                              multiplier: CGFloat = 1,
                              offset: CGFloat = 0,
-                             priority: UILayoutPriority = .required,
+                             priority: EZLayoutPriority = .required,
                              isActive: Bool = true,
                              usingSafeArea: Bool = false) -> NSLayoutConstraint {
         let constrainable = safeConstrainable(for: view.superview, usingSafeArea: usingSafeArea)
@@ -365,7 +369,7 @@ public extension Constrainable {
     func centerYToSuperview( _ anchor: NSLayoutYAxisAnchor? = nil,
                              multiplier: CGFloat = 1,
                              offset: CGFloat = 0,
-                             priority: UILayoutPriority = .required,
+                             priority: EZLayoutPriority = .required,
                              isActive: Bool = true,
                              usingSafeArea: Bool = false) -> NSLayoutConstraint {
         let constrainable = safeConstrainable(for: view.superview, usingSafeArea: usingSafeArea)

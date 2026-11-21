@@ -4,6 +4,7 @@
 //  Created by Vladyslav Vdovychenko on 16.09.2026.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 /// Constraints that follow the keyboard via `UIView.keyboardLayoutGuide`.
@@ -48,3 +49,4 @@ public extension Constrainable {
     }
     
 }
+#endif

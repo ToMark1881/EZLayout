@@ -4,7 +4,11 @@
 //  Created by Vladyslav Vdovychenko on 25.03.2026.
 //
 
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 public extension Collection where Iterator.Element == NSLayoutConstraint {
     
@@ -35,7 +39,7 @@ public extension NSLayoutConstraint {
     /// - Parameter p: The layout priority to assign.
     /// - Returns: The same constraint instance to allow fluent configuration.
     @objc
-    func with(_ p: UILayoutPriority) -> Self {
+    func with(_ p: EZLayoutPriority) -> Self {
         priority = p
         return self
     }

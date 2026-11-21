@@ -4,7 +4,11 @@
 //  Created by Vladyslav Vdovychenko on 25.03.2026.
 //
 
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 public extension Constrainable {
     
@@ -20,7 +24,7 @@ public extension Constrainable {
     @discardableResult
     func center(in layoutable: Layoutable,
                 offset: CGPoint = .zero,
-                priority: UILayoutPriority = .required,
+                priority: EZLayoutPriority = .required,
                 isActive: Bool = true) -> [NSLayoutConstraint] {
         prepareForLayout()
         
@@ -46,9 +50,9 @@ public extension Constrainable {
     @discardableResult
     func edges(to layoutable: Layoutable,
                excluding excludedEdge: LayoutEdge = .none,
-               insets: UIEdgeInsets = .zero,
+               insets: EZEdgeInsets = .zero,
                relation: NSLayoutConstraint.Relation = .equal,
-               priority: UILayoutPriority = .required,
+               priority: EZLayoutPriority = .required,
                isActive: Bool = true) -> [NSLayoutConstraint] {
         prepareForLayout()
         
@@ -84,7 +88,7 @@ public extension Constrainable {
     @discardableResult
     func size(_ size: CGSize,
               relation: NSLayoutConstraint.Relation = .equal,
-              priority: UILayoutPriority = .required,
+              priority: EZLayoutPriority = .required,
               isActive: Bool = true) -> [NSLayoutConstraint] {
         prepareForLayout()
         
@@ -111,7 +115,7 @@ public extension Constrainable {
               multiplier: CGFloat = 1,
               insets: CGSize = .zero,
               relation: NSLayoutConstraint.Relation = .equal,
-              priority: UILayoutPriority = .required,
+              priority: EZLayoutPriority = .required,
               isActive: Bool = true) -> [NSLayoutConstraint] {
         prepareForLayout()
         
@@ -134,9 +138,9 @@ public extension Constrainable {
     /// - Returns: The created left and top constraints.
     @discardableResult
     func origin(to layoutable: Layoutable,
-                insets: UIEdgeInsets = .zero,
+                insets: EZEdgeInsets = .zero,
                 relation: NSLayoutConstraint.Relation = .equal,
-                priority: UILayoutPriority = .required,
+                priority: EZLayoutPriority = .required,
                 isActive: Bool = true) -> [NSLayoutConstraint] {
         prepareForLayout()
         
@@ -159,7 +163,7 @@ public extension Constrainable {
     @discardableResult
     func width(_ width: CGFloat,
                relation: NSLayoutConstraint.Relation = .equal,
-               priority: UILayoutPriority = .required,
+               priority: EZLayoutPriority = .required,
                isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         
@@ -191,7 +195,7 @@ public extension Constrainable {
                multiplier: CGFloat = 1,
                offset: CGFloat = 0,
                relation: NSLayoutConstraint.Relation = .equal,
-               priority: UILayoutPriority = .required,
+               priority: EZLayoutPriority = .required,
                isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         
@@ -229,7 +233,7 @@ public extension Constrainable {
                        multiplier: CGFloat = 1,
                        offset: CGFloat = 0,
                        relation: NSLayoutConstraint.Relation = .equal,
-                       priority: UILayoutPriority = .required,
+                       priority: EZLayoutPriority = .required,
                        isActive: Bool = true) -> NSLayoutConstraint {
         return width(to: layoutable, layoutable.heightAnchor, multiplier: multiplier, offset: offset, relation: relation, priority: priority, isActive: isActive)
     }
@@ -245,7 +249,7 @@ public extension Constrainable {
     @discardableResult
     func width(min: CGFloat? = nil,
                max: CGFloat? = nil,
-               priority: UILayoutPriority = .required,
+               priority: EZLayoutPriority = .required,
                isActive: Bool = true) -> [NSLayoutConstraint] {
         prepareForLayout()
         
@@ -277,7 +281,7 @@ public extension Constrainable {
     @discardableResult
     func height(_ height: CGFloat,
                 relation: NSLayoutConstraint.Relation = .equal,
-                priority: UILayoutPriority = .required,
+                priority: EZLayoutPriority = .required,
                 isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         
@@ -309,7 +313,7 @@ public extension Constrainable {
                 multiplier: CGFloat = 1,
                 offset: CGFloat = 0,
                 relation: NSLayoutConstraint.Relation = .equal,
-                priority: UILayoutPriority = .required,
+                priority: EZLayoutPriority = .required,
                 isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         
@@ -347,7 +351,7 @@ public extension Constrainable {
                        multiplier: CGFloat = 1,
                        offset: CGFloat = 0,
                        relation: NSLayoutConstraint.Relation = .equal,
-                       priority: UILayoutPriority = .required,
+                       priority: EZLayoutPriority = .required,
                        isActive: Bool = true) -> NSLayoutConstraint {
         return height(to: layoutable, layoutable.widthAnchor, multiplier: multiplier, offset: offset, relation: relation, priority: priority, isActive: isActive)
     }
@@ -363,7 +367,7 @@ public extension Constrainable {
     @discardableResult
     func height(min: CGFloat? = nil,
                 max: CGFloat? = nil,
-                priority: UILayoutPriority = .required,
+                priority: EZLayoutPriority = .required,
                 isActive: Bool = true) -> [NSLayoutConstraint] {
         prepareForLayout()
         
@@ -395,7 +399,7 @@ public extension Constrainable {
     @discardableResult
     func aspectRatio(_ ratio: CGFloat,
                      relation: NSLayoutConstraint.Relation = .equal,
-                     priority: UILayoutPriority = .required,
+                     priority: EZLayoutPriority = .required,
                      isActive: Bool = true) -> NSLayoutConstraint {
         return widthToHeight(of: self.view, multiplier: ratio, offset: 0, relation: relation, priority: priority, isActive: isActive)
     }
@@ -413,7 +417,7 @@ public extension Constrainable {
     func leadingToTrailing(of layoutable: Layoutable,
                            offset: CGFloat = 0,
                            relation: NSLayoutConstraint.Relation = .equal,
-                           priority: UILayoutPriority = .required,
+                           priority: EZLayoutPriority = .required,
                            isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         return leading(to: layoutable, layoutable.trailingAnchor, offset: offset, relation: relation, priority: priority, isActive: isActive)
@@ -434,7 +438,7 @@ public extension Constrainable {
                  _ anchor: NSLayoutXAxisAnchor? = nil,
                  offset: CGFloat = 0,
                  relation: NSLayoutConstraint.Relation = .equal,
-                 priority: UILayoutPriority = .required,
+                 priority: EZLayoutPriority = .required,
                  isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         
@@ -465,7 +469,7 @@ public extension Constrainable {
     func leftToRight(of layoutable: Layoutable,
                      offset: CGFloat = 0,
                      relation: NSLayoutConstraint.Relation = .equal,
-                     priority: UILayoutPriority = .required,
+                     priority: EZLayoutPriority = .required,
                      isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         return left(to: layoutable, layoutable.rightAnchor, offset: offset, relation: relation, priority: priority, isActive: isActive)
@@ -485,7 +489,7 @@ public extension Constrainable {
               _ anchor: NSLayoutXAxisAnchor? = nil,
               offset: CGFloat = 0,
               relation: NSLayoutConstraint.Relation = .equal,
-              priority: UILayoutPriority = .required,
+              priority: EZLayoutPriority = .required,
               isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         
@@ -513,7 +517,7 @@ public extension Constrainable {
     func trailingToLeading(of layoutable: Layoutable,
                            offset: CGFloat = 0,
                            relation: NSLayoutConstraint.Relation = .equal,
-                           priority: UILayoutPriority = .required,
+                           priority: EZLayoutPriority = .required,
                            isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         return trailing(to: layoutable, layoutable.leadingAnchor, offset: offset, relation: relation, priority: priority, isActive: isActive)
@@ -533,7 +537,7 @@ public extension Constrainable {
                   _ anchor: NSLayoutXAxisAnchor? = nil,
                   offset: CGFloat = 0,
                   relation: NSLayoutConstraint.Relation = .equal,
-                  priority: UILayoutPriority = .required,
+                  priority: EZLayoutPriority = .required,
                   isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         
@@ -564,7 +568,7 @@ public extension Constrainable {
     func rightToLeft(of layoutable: Layoutable,
                      offset: CGFloat = 0,
                      relation: NSLayoutConstraint.Relation = .equal,
-                     priority: UILayoutPriority = .required,
+                     priority: EZLayoutPriority = .required,
                      isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         return right(to: layoutable, layoutable.leftAnchor, offset: offset, relation: relation, priority: priority, isActive: isActive)
@@ -584,7 +588,7 @@ public extension Constrainable {
                _ anchor: NSLayoutXAxisAnchor? = nil,
                offset: CGFloat = 0,
                relation: NSLayoutConstraint.Relation = .equal,
-               priority: UILayoutPriority = .required,
+               priority: EZLayoutPriority = .required,
                isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         
@@ -615,7 +619,7 @@ public extension Constrainable {
     func topToBottom(of layoutable: Layoutable,
                      offset: CGFloat = 0,
                      relation: NSLayoutConstraint.Relation = .equal,
-                     priority: UILayoutPriority = .required,
+                     priority: EZLayoutPriority = .required,
                      isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         return top(to: layoutable, layoutable.bottomAnchor, offset: offset, relation: relation, priority: priority, isActive: isActive)
@@ -635,7 +639,7 @@ public extension Constrainable {
              _ anchor: NSLayoutYAxisAnchor? = nil,
              offset: CGFloat = 0,
              relation: NSLayoutConstraint.Relation = .equal,
-             priority: UILayoutPriority = .required,
+             priority: EZLayoutPriority = .required,
              isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         
@@ -666,7 +670,7 @@ public extension Constrainable {
     func bottomToTop(of layoutable: Layoutable,
                      offset: CGFloat = 0,
                      relation: NSLayoutConstraint.Relation = .equal,
-                     priority: UILayoutPriority = .required,
+                     priority: EZLayoutPriority = .required,
                      isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         return bottom(to: layoutable, layoutable.topAnchor, offset: offset, relation: relation, priority: priority, isActive: isActive)
@@ -686,7 +690,7 @@ public extension Constrainable {
                 _ anchor: NSLayoutYAxisAnchor? = nil,
                 offset: CGFloat = 0,
                 relation: NSLayoutConstraint.Relation = .equal,
-                priority: UILayoutPriority = .required,
+                priority: EZLayoutPriority = .required,
                 isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         
@@ -720,7 +724,7 @@ public extension Constrainable {
                  _ anchor: NSLayoutXAxisAnchor? = nil,
                  multiplier: CGFloat = 1,
                  offset: CGFloat = 0,
-                 priority: UILayoutPriority = .required,
+                 priority: EZLayoutPriority = .required,
                  isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
         
@@ -758,7 +762,7 @@ public extension Constrainable {
                  _ anchor: NSLayoutYAxisAnchor? = nil,
                  multiplier: CGFloat = 1,
                  offset: CGFloat = 0,
-                 priority: UILayoutPriority = .required,
+                 priority: EZLayoutPriority = .required,
                  isActive: Bool = true) -> NSLayoutConstraint {
         prepareForLayout()
 
@@ -788,8 +792,8 @@ public extension Constrainable {
     /// - Parameters:
     ///   - priority: The hugging priority to apply.
     ///   - axis: The axis to which the priority applies.
-    func setHugging(_ priority: UILayoutPriority,
-                    for axis: NSLayoutConstraint.Axis) {
+    func setHugging(_ priority: EZLayoutPriority,
+                    for axis: EZAxis) {
         view.setContentHuggingPriority(priority, for: axis)
     }
     
@@ -798,8 +802,8 @@ public extension Constrainable {
     /// - Parameters:
     ///   - priority: The compression resistance priority to apply.
     ///   - axis: The axis to which the priority applies.
-    func setCompressionResistance(_ priority: UILayoutPriority,
-                                  for axis: NSLayoutConstraint.Axis) {
+    func setCompressionResistance(_ priority: EZLayoutPriority,
+                                  for axis: EZAxis) {
         view.setContentCompressionResistancePriority(priority, for: axis)
     }
 }
